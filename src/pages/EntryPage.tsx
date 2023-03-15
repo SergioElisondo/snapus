@@ -1,3 +1,4 @@
+import React from 'react';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonButtons, IonBackButton } from '@ionic/react';
 import { useParams } from 'react-router';
 import { entries } from '../data'

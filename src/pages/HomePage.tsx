@@ -1,5 +1,5 @@
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonList, IonItem } from '@ionic/react';
-import { entries } from "../data.js"
+import { entries } from "../data"
 
 const HomePage: React.FC = () => {
   return (
@@ -12,7 +12,7 @@ const HomePage: React.FC = () => {
       <IonContent className="ion-padding">
         <IonList>
           {entries.map((entry) =>
-            <IonItem button key={entry.id} routerLink={`/entries/${entry.id}`}>{entry.title}
+            <IonItem button key={entry.id} routerLink={`/my/entries/${entry.id}`}>{entry.title}
             </IonItem>
           )}
         </IonList>

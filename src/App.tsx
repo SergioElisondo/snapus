@@ -16,10 +16,10 @@ const App: React.FC = () => {
         <IonReactRouter>
             <IonRouterOutlet>
               <Route exact path="/login">
-                {<LoginPage onLogin={() => setLoggedIn(true)}/>}
+                {<LoginPage userLoggedIn={loggedIn} onLogin={() => setLoggedIn(true)}/>}
               </Route>
-              <Route path="my">
-                <AppTabs />
+              <Route path="/my">
+                <AppTabs loggedIn={loggedIn} />
               </Route>
               <Redirect exact path='/' to="/my/entries"/>
             </IonRouterOutlet>
@@ -30,3 +30,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
