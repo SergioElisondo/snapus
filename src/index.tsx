@@ -20,9 +20,11 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import { SplashScreen } from '@capacitor/splash-screen';
 
 setupIonicReact();
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
 root.render(<App />);
+SplashScreen.hide(); // this is hiding the splash screen - remove if you need the splash screen
