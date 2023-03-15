@@ -10,16 +10,17 @@ import { AuthContext } from './auth';
 const App: React.FC = () => {
   const [ loggedIn, setLoggedIn ] = useState(false)
 
+
   return (
     <IonApp>
       <AuthContext.Provider value={{ loggedIn }}>
         <IonReactRouter>
             <IonRouterOutlet>
               <Route exact path="/login">
-                {<LoginPage userLoggedIn={loggedIn} onLogin={() => setLoggedIn(true)}/>}
+                {<LoginPage onLogin={() => setLoggedIn(true)}/>}
               </Route>
               <Route path="/my">
-                <AppTabs loggedIn={loggedIn} />
+                <AppTabs />
               </Route>
               <Redirect exact path='/' to="/my/entries"/>
             </IonRouterOutlet>

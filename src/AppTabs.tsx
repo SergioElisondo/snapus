@@ -9,15 +9,21 @@ import { home as homeIcon, settings as settingsIcon } from 'ionicons/icons'
 // import { useState } from 'react';
 // import { IonReactRouter } from '@ionic/react-router';
 
+import { useAuth } from './auth';
 
 
-interface Props {
-  loggedIn: boolean;
-}
 
-const AppTabs: React.FC<Props> = ({loggedIn}) => {
+// interface Props {
+//   loggedIn: boolean;
+// }
+
+// <Props> removed from React.FC<Props>
+// no longer needed since using useAuth
+
+
+const AppTabs: React.FC = () => {
   // const [loggedIn, setLoggedIn] = useState(false)
-  // // const { loggedIn } = useAuth()
+  const { loggedIn } = useAuth()
   if(!loggedIn){
     return <Redirect to="/login" />
     }
