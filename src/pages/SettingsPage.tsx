@@ -1,5 +1,5 @@
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage } from '@ionic/react';
-
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonButton } from '@ionic/react';
+import {auth} from '../firebase' // need if you want user to log out, talks with data there
 const SettingsPage: React.FC = () => {
   return (
     <IonPage>
@@ -9,7 +9,9 @@ const SettingsPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        This is the Settings page.
+        <IonButton color={'medium'} expand="block" onClick={() => {
+          auth.signOut()
+        }}>Logout</IonButton>
       </IonContent>
     </IonPage>
   );
