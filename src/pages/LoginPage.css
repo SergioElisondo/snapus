@@ -2,6 +2,7 @@
 
 * {
   font-family: 'Montserrat', sans-serif;
+  letter-spacing: .5px;
 }
 
 .login-email-title, .login-email-input, .login-password-title, .login-password-input {

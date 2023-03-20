@@ -6,32 +6,32 @@ import { auth } from '../firebase';
 import { eye, eyeOff } from 'ionicons/icons';
 
 // css file
-import './LoginPage.css'
+import './RegisterPage.css'
 
 // interface Props {
 //   onLogin: () => void;
 // }
 
 //const LoginPage: React.FC<Props> = ({ onLogin }) => { ...
-const LoginPage: React.FC = () => {
-  const { loggedIn} = useAuth()
-  // const { loggedIn, userId} = useAuth() this is how you will get userID
+const RegisterPage: React.FC = () => {
+  const { loggedIn } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [status, setStatus] = useState({error: false, loading: false})
   const [userError, setUserError] = useState('')
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try {
       setStatus({loading: true, error: false})
-      const credential = await auth.signInWithEmailAndPassword(email, password)
+      const credential = await auth.createUserWithEmailAndPassword(email, password)
       // setStatus({loading: false, error: false})
       console.log(credential, 'credentials!')
       // onLogin()
     } catch (error) {
       setStatus({loading: false, error: true})
       console.log(error)
+      console.log(error.message)
       setUserError(error.message)
     }
   }
@@ -47,7 +47,7 @@ const LoginPage: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Login</IonTitle>
+          <IonTitle>Register</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonList>
@@ -63,14 +63,14 @@ const LoginPage: React.FC = () => {
         </IonItem>
       </IonList>
       { /* error && <IonText color={'danger'}>Invalid Credentials</IonText>} {Only if the error is true, otherwise no action take} */}
-      {status.error ? <IonText className='invalid-credentials-login' color={'danger'}>Invalid Credentials... {userError}</IonText> : null }
+      {status.error ? <IonText className='invalid-credentials-login' color={'danger'}>Registration Failed... {userError}</IonText> : null }
       <IonContent className="ion-padding">
-        <IonButton expand='block' onClick={handleLogin}>Login</IonButton>
-        <IonButton expand='block' fill="clear" routerLink='/register'>Don't Have an Account?</IonButton>
-        <IonLoading isOpen={status.loading} message={'Logging In... Hang Tight!'}/>
+        <IonButton expand='block' onClick={handleRegister}>Create Account</IonButton>
+        <IonButton expand='block' fill="clear" routerLink='/login'>Already Have an Account?</IonButton>
+        <IonLoading isOpen={status.loading} message={'Registering... Hang Tight!'}/>
       </IonContent>
     </IonPage>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

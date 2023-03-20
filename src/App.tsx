@@ -2,37 +2,38 @@ import { IonApp, IonLoading } from '@ionic/react';
 
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { IonReactRouter } from '@ionic/react-router';
-import LoginPage from './pages/LoginPage';
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import AppTabs from './AppTabs';
-import { AuthContext } from './auth';
+import { AuthContext, useAuthInit } from './auth';
+
+// import { auth } from './firebase'
+
+import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
-import { auth } from './firebase'
+import RegisterPage from './pages/RegisterPage';
 
 const App: React.FC = () => {
-  const [ authState, setAuthState ] = useState({loading: true, loggedIn: false})
-  useEffect(() => {
-    auth.onAuthStateChanged(user => {
-    // console.log('onAuthStateChanged: ', user)
-    setAuthState({loading: false, loggedIn: Boolean(user)}) // if user is null ? then set to false. when it's an object ? then set to true
-    }) // have firebase notify us when auth state changes, outside of function so it gets called only once when app is loaded
-  }, []) // emtpy array, effect should only run once, then never run again. The array is a list of values this effect depends on, so if one of the values change, this effect will run again
+  const { loading, auth } = useAuthInit() //calling hook instead of using useState and only returns authState, not an array
 
-// IonRouterOutlet is replaced with Switch -- we lose animations, AppTabs still has it, which means users will get effect once logged in
-  console.log(`rendering App with authState: `, authState)
-
-  if(authState.loading) {
+  // IonRouterOutlet is replaced with Switch -- we lose animations, AppTabs still has it, which means users will get effect once logged in
+  console.log(`rendering App with authState: `, auth)
+  if(loading) {
     return <IonLoading isOpen message={'Loading...'}/>
   }
   // <LoginPage onLogin={() => setLoggedIn(true)}/> from LoginPage Compobent
+  // <AuthContext.Provider value={{ loggedIn: authState.loggedIn }}> this is before change in auth.ts file
+  //  <AuthContext.Provider value={ authState.auth }> before unpacking useAuthInit()
   return (
     <IonApp>
-      <AuthContext.Provider value={{ loggedIn: authState.loggedIn }}>
+      <AuthContext.Provider value={ auth }>
         <IonReactRouter>
             {/* <IonRouterOutlet> */}
             <Switch>
               <Route exact path="/login">
                 <LoginPage />
+              </Route>
+              <Route exact path="/register">
+                <RegisterPage />
               </Route>
               <Route path="/my">
                 <AppTabs />

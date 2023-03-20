@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
-import 'firebase/auth'
+import 'firebase/auth'; // importing services one at a time instead of all of at once
+import 'firebase/firestore'; // this allows to use the firestore method
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -12,6 +13,7 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
-const app = firebase.initializeApp(firebaseConfig)
+const app = firebase.initializeApp(firebaseConfig);
 
-export const auth = app.auth()
+export const auth = app.auth();
+export const firestore = app.firestore();
