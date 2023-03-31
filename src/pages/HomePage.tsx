@@ -47,7 +47,8 @@ const HomePage: React.FC = () => {
         </IonList>
         <IonFab vertical='bottom' horizontal='end'>
           <IonFabButton routerLink='/my/entries/add'>
-            <IonIcon icon='addIcon'/>
+            {/* <IonIcon icon='addIcon'/> */}
+            <h2>+</h2>
           </IonFabButton>
         </IonFab>
       </IonContent>
