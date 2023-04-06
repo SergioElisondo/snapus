@@ -29,8 +29,11 @@ const HomePage: React.FC = () => {
   const [entries, setEntries] = useState<Entry[]>([])
   useEffect(() => {
     const entriesRef = firestore.collection('users').doc(userId).collection('entries') // was  'entries'
-    entriesRef.get().then(({docs}) => setEntries(docs.map(toEntry)))
+    // entriesRef.get().then(({docs}) => setEntries(docs.map(toEntry)))
+    return entriesRef.onSnapshot(({docs}) => setEntries(docs.map(toEntry)))
+    // onSnapshot can be used to build a chat
   }, [userId]);
+  console.log('[HomePage] render entries: ', entries)
   return (
     <IonPage>
       <IonHeader>
