@@ -4,7 +4,7 @@ import { useAuth } from '../auth';
 // import { entries } from "../data"
 import { firestore } from '../firebase';
 import { Entry, toEntry } from '../models'
-import { add as addIcon } from 'ionicons/icons'
+// import { add as addIcon } from 'ionicons/icons'
 
 // original code
 
@@ -51,6 +51,7 @@ const HomePage: React.FC = () => {
         <IonFab vertical='bottom' horizontal='end'>
           <IonFabButton routerLink='/my/entries/add'>
             {/* <IonIcon icon='addIcon'/> */}
+            {/* <IonIcon icon={addIcon} slot='icon-only'></IonIcon> */}
             <h2>+</h2>
           </IonFabButton>
         </IonFab>
