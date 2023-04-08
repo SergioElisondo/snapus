@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonButtons, IonBackButton, IonIcon, IonRouterLink } from '@ionic/react';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonButtons, IonBackButton, IonIcon } from '@ionic/react';
 import { useParams } from 'react-router';
 // import { entries } from '../data'
 import { firestore } from '../firebase'
