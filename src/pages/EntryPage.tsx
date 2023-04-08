@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonButtons, IonBackButton, IonIcon } from '@ionic/react';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonButtons, IonBackButton, IonIcon, IonRouterLink } from '@ionic/react';
 import { useParams } from 'react-router';
 // import { entries } from '../data'
 import { firestore } from '../firebase'
@@ -13,7 +13,7 @@ import { useHistory } from 'react-router';
 interface RouteParams {
   id: string;
 }
-const EntryPage: React.FC = () => {
+const EntryPageWithRouter: React.FC = () => {
   const { userId } = useAuth()
   const [entry, setEntry]  = useState<Entry>()
   const { id } = useParams<RouteParams>()
@@ -31,30 +31,30 @@ const EntryPage: React.FC = () => {
 
   const handleDelete = async () => {
     const entryRef = firestore.collection('users').doc(userId).collection('entries').doc(id)
-    await entryRef.delete()
+    entryRef.delete()
     history.goBack()
   }
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot='start'>
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot='start'>
               <IonBackButton />
-          </IonButtons>
-          <IonTitle>{entry?.title}</IonTitle>
-          <IonButtons slot='end'>
-            <IonButtons onClick={handleDelete}>
-              <IonIcon icon={trashIcon} slot='icon-only'></IonIcon>
             </IonButtons>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        {entry?.description}
-      </IonContent>
-    </IonPage>
+            <IonTitle>{entry?.title}</IonTitle>
+            <IonButtons slot='end'>
+              <IonButtons onClick={handleDelete}>
+                <IonIcon icon={trashIcon} slot='icon-only'></IonIcon>
+              </IonButtons>
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent className="ion-padding">
+          {entry?.description}
+        </IonContent>
+      </IonPage>
   );
 };
 
-export default EntryPage;
+export default EntryPageWithRouter;
