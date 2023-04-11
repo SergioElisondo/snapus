@@ -8,6 +8,7 @@ import { useAuth } from '../auth';
 import { trash as trashIcon } from 'ionicons/icons'
 
 import { useHistory } from 'react-router';
+import { formatDate } from '../date';
 
 
 interface RouteParams {
@@ -42,7 +43,7 @@ const EntryPageWithRouter: React.FC = () => {
             <IonButtons slot='start'>
               <IonBackButton />
             </IonButtons>
-            <IonTitle>{entry?.title}</IonTitle>
+            <IonTitle>{formatDate(entry?.date)}</IonTitle>
             <IonButtons slot='end'>
               <IonButtons onClick={handleDelete}>
                 <IonIcon icon={trashIcon} slot='icon-only'></IonIcon>
@@ -51,7 +52,8 @@ const EntryPageWithRouter: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
-          {entry?.description}
+          <h2>{entry?.title}</h2>
+          <p>{entry?.description}</p>
         </IonContent>
       </IonPage>
   );

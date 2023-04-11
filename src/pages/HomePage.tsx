@@ -1,10 +1,12 @@
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonList, IonItem, IonFab, IonFabButton, IonIcon, IonLabel } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../auth';
+import { formatDate } from '../date';
 // import { entries } from "../data"
 import { firestore } from '../firebase';
 import { Entry, toEntry } from '../models'
 // import { add as addIcon } from 'ionicons/icons'
+import './HomePage.css'
 
 // original code
 
@@ -23,21 +25,17 @@ import { Entry, toEntry } from '../models'
 //     })
 //   }, [])
 
-
-function formatDate(isoString){
-  return new Date(isoString).toLocaleDateString('en-US', {day: 'numeric', month: 'short', year: 'numeric'})
-}
-
 const HomePage: React.FC = () => {
   const { userId } = useAuth();
   const [entries, setEntries] = useState<Entry[]>([])
   useEffect(() => {
     const entriesRef = firestore.collection('users').doc(userId).collection('entries') // was  'entries'
     // entriesRef.get().then(({docs}) => setEntries(docs.map(toEntry)))
-    return entriesRef.onSnapshot(({docs}) => setEntries(docs.map(toEntry)))
+    return entriesRef.orderBy('date', 'desc').limit(7)
+    .onSnapshot(({docs}) => setEntries(docs.map(toEntry)))
     // onSnapshot can be used to build a chat
   }, [userId]);
-  console.log('[HomePage] render entries: ', entries)
+  console.log('[HomePage] render entries: ', entries.length)
   return (
     <IonPage>
       <IonHeader>
@@ -47,7 +45,8 @@ const HomePage: React.FC = () => {
       </IonHeader>
       <IonContent className="ion-padding">
         <IonList>
-          {entries.map((entry) =>
+          {entries.length === 0 ?<h2 className='home-no-entries'>No Entries Availabe... </h2> :
+          entries.map((entry) =>
             <IonItem button key={entry.id} routerLink={`/my/entries/view/${entry.id}`}>
               <IonLabel>
                 <h2>{formatDate(entry.date)}</h2>
@@ -60,7 +59,7 @@ const HomePage: React.FC = () => {
           <IonFabButton routerLink='/my/entries/add'>
             {/* <IonIcon icon='addIcon'/> */}
             {/* <IonIcon icon={addIcon} slot='icon-only'></IonIcon> */}
-            <h2>+</h2>
+            <h2 className='home-plus-sign'>+</h2>
           </IonFabButton>
         </IonFab>
       </IonContent>
