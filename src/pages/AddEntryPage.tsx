@@ -1,13 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonInput, IonButton } from '@ionic/react';
-import { firestore } from '../firebase';
+import { firestore, storage } from '../firebase';
 import { useAuth } from '../auth';
 import { useHistory } from 'react-router';
 
 import './AddEntryPage.css'
 
 
-// import { entries } from '../data'
+async function savePicture(blobUrl: string, userId: string): Promise<string> {
+  const pictureRef = storage
+    .ref(`/user/${userId}/pictures/${Date.now()}`);
+  const response = await fetch(blobUrl);
+  const blob = await response.blob();
+  const snapshot = await pictureRef.put(blob);
+  const url = await snapshot.ref.getDownloadURL();
+  console.log('saved picture:', url);
+  return url; // Return the download URL
+}
 
 const AddEntryPage: React.FC = () => {
   const { userId } = useAuth()
@@ -36,16 +45,22 @@ const AddEntryPage: React.FC = () => {
   }
 
 
+
+
   const handleSave = async () => {
-    // console.log("This is now saved: ", {title, description})
-    const entriesRef = firestore.collection('users').doc(userId)
-    .collection('entries')
-    const entryData = {date, title, description}
-    const entryRef = entriesRef.add(entryData)
-    console.log(entryRef)
-    history.goBack()
-    // console.log('Saved: ', (await entryRef).id)
+  const entriesRef = firestore
+    .collection('users')
+    .doc(userId)
+    .collection('entries');
+  let entryData = { date, title, description, pictureUrl };
+  if (pictureUrl.startsWith('blob:')) {
+    const downloadUrl = await savePicture(pictureUrl, userId);
+    entryData = { ...entryData, pictureUrl: downloadUrl };
   }
+  const entryRef = entriesRef.add(entryData);
+  console.log(entryRef);
+  history.goBack();
+};
 
   return (
       <IonPage>
