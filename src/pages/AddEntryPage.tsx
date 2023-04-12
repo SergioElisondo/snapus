@@ -4,6 +4,7 @@ import { firestore } from '../firebase';
 import { useAuth } from '../auth';
 import { useHistory } from 'react-router';
 
+
 // import { entries } from '../data'
 
 const AddEntryPage: React.FC = () => {
@@ -11,7 +12,19 @@ const AddEntryPage: React.FC = () => {
   const history = useHistory()
   const [date, setDate] = useState('')
   const [title, setTitle] = useState('')
+  const [pictureUrl, setPictureUrl] = useState('/assets/placeholder.png')
   const [description, setDescription] = useState('')
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('files: ', event.target.files)
+    if(event.target.files.length > 0){
+      const file = event.target.files.item(0)
+      const pictureUrl = URL.createObjectURL(file)
+      console.log('created URL: ', pictureUrl)
+      setPictureUrl(pictureUrl)
+    }
+  }
+
 
   const handleSave = async () => {
     // console.log("This is now saved: ", {title, description})
@@ -43,6 +56,13 @@ const AddEntryPage: React.FC = () => {
             <IonItem>
               <IonLabel position='stacked'>Title</IonLabel>
               <IonInput value={title} onIonChange={(event) => setTitle(event.detail.value)}/>
+            </IonItem>
+            <IonItem>
+              <IonLabel position='stacked'>Picture</IonLabel><br />
+              <input type='file' accept='image/*'
+              onChange={handleFileChange}
+              />
+              <img src={pictureUrl} alt='placeholder asset' />
             </IonItem>
             <IonItem>
               <IonLabel position='stacked'>Descrition</IonLabel>
