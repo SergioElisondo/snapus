@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonInput, IonButton } from '@ionic/react';
 import { firestore } from '../firebase';
 import { useAuth } from '../auth';
 import { useHistory } from 'react-router';
+
+import './AddEntryPage.css'
 
 
 // import { entries } from '../data'
@@ -14,6 +16,14 @@ const AddEntryPage: React.FC = () => {
   const [title, setTitle] = useState('')
   const [pictureUrl, setPictureUrl] = useState('/assets/placeholder.png')
   const [description, setDescription] = useState('')
+  const fileInputRef = useRef<HTMLInputElement>()
+
+  useEffect(() => () => {
+    if(pictureUrl.startsWith('blob:')){
+      URL.revokeObjectURL(pictureUrl);
+      console.log('revoked URL: ', pictureUrl)
+    }
+  }, [pictureUrl])
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log('files: ', event.target.files)
@@ -59,10 +69,12 @@ const AddEntryPage: React.FC = () => {
             </IonItem>
             <IonItem>
               <IonLabel position='stacked'>Picture</IonLabel><br />
-              <input type='file' accept='image/*'
+              <input type='file' accept='image/*' hidden ref={fileInputRef}
               onChange={handleFileChange}
               />
-              <img src={pictureUrl} alt='placeholder asset' />
+              <img src={pictureUrl} alt='placeholder asset'
+              onClick={() => fileInputRef.current.click()}
+              />
             </IonItem>
             <IonItem>
               <IonLabel position='stacked'>Descrition</IonLabel>

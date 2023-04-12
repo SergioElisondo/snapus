@@ -1,0 +1,12 @@
+* {
+  box-sizing: border-box;
+}
+
+img {
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+img:hover {
+  box-shadow: 2px 2px 4px rgba(1, 1, 1, 0.412);
+}
