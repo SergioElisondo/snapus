@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonList, IonItem, IonFab, IonFabButton, IonIcon, IonLabel } from '@ionic/react';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonList, IonItem, IonFab, IonFabButton, IonIcon, IonLabel, IonThumbnail, IonImg } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../auth';
 import { formatDate } from '../date';
@@ -48,6 +48,9 @@ const HomePage: React.FC = () => {
           {entries.length === 0 ?<h2 className='home-no-entries'>No Entries Availabe... </h2> :
           entries.map((entry) =>
             <IonItem button key={entry.id} routerLink={`/my/entries/view/${entry.id}`}>
+              <IonThumbnail slot='end'>
+                <IonImg src={entry.pictureUrl}/>
+              </IonThumbnail>
               <IonLabel>
                 <h2>{formatDate(entry.date)}</h2>
                 <h3>{entry.title}</h3>

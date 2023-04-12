@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonInput, IonButton } from '@ionic/react';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonInput, IonButton, IonLoading } from '@ionic/react';
 import { firestore, storage } from '../firebase';
 import { useAuth } from '../auth';
 import { useHistory } from 'react-router';
 
 import './AddEntryPage.css'
+import { error } from 'console';
 
 
 async function savePicture(blobUrl: string, userId: string): Promise<string> {
@@ -26,6 +27,7 @@ const AddEntryPage: React.FC = () => {
   const [pictureUrl, setPictureUrl] = useState('/assets/placeholder.png')
   const [description, setDescription] = useState('')
   const fileInputRef = useRef<HTMLInputElement>()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => () => {
     if(pictureUrl.startsWith('blob:')){
@@ -47,20 +49,49 @@ const AddEntryPage: React.FC = () => {
 
 
 
-  const handleSave = async () => {
+//   const handleSave = async () => {
+//     setLoading(true)
+//   const entriesRef = firestore
+//     .collection('users')
+//     .doc(userId)
+//     .collection('entries');
+//   let entryData = { date, title, description, pictureUrl };
+//   if (pictureUrl.startsWith('blob:')) {
+//     const downloadUrl = await savePicture(pictureUrl, userId);
+//     entryData = { ...entryData, pictureUrl: downloadUrl };
+//   } else {
+//     setLoading(false)
+//     console.log('there was an error')
+//   }
+//   const entryRef = entriesRef.add(entryData);
+//   console.log(entryRef);
+//    setLoading(false); // set showLoading to false after save is complete
+//   history.goBack();
+// };
+
+const handleSave = async () => {
+  setLoading(true);
   const entriesRef = firestore
     .collection('users')
     .doc(userId)
     .collection('entries');
   let entryData = { date, title, description, pictureUrl };
   if (pictureUrl.startsWith('blob:')) {
-    const downloadUrl = await savePicture(pictureUrl, userId);
-    entryData = { ...entryData, pictureUrl: downloadUrl };
+    try {
+      const downloadUrl = await savePicture(pictureUrl, userId);
+      entryData = { ...entryData, pictureUrl: downloadUrl };
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+      return;
+    }
   }
   const entryRef = entriesRef.add(entryData);
   console.log(entryRef);
+  setLoading(false); // set showLoading to false after save is complete
   history.goBack();
 };
+
 
   return (
       <IonPage>
@@ -96,6 +127,11 @@ const AddEntryPage: React.FC = () => {
               <IonInput value={description} onIonChange={(event) => setDescription(event.detail.value)}/>
             </IonItem>
             <IonButton expand='block' onClick={handleSave}>Save</IonButton>
+            <IonLoading
+          isOpen={loading}
+          message={"Uploading image..."}
+          duration={0}
+        />
           </IonList>
         </IonContent>
       </IonPage>
