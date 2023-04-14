@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonInput, IonButton, IonLoading } from '@ionic/react';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonPage, IonButtons, IonBackButton, IonList, IonItem, IonLabel, IonInput, IonButton, IonLoading, isPlatform } from '@ionic/react';
 import { firestore, storage } from '../firebase';
 import { useAuth } from '../auth';
 import { useHistory } from 'react-router';
@@ -70,9 +70,8 @@ const AddEntryPage: React.FC = () => {
 // };
 
 const handlePictureClick = async () => {
-  // this works for regular web browsers
-  // fileInputRef.current.click()
-  try {
+  if(isPlatform('capacitor')){
+    try {
     const photo = await Camera.getPhoto({
     resultType: CameraResultType.Uri,
     source: CameraSource.Prompt,
@@ -83,6 +82,11 @@ const handlePictureClick = async () => {
     } catch (error) {
       console.log('Camera errpr: ', error)
   }
+  } else {
+    // this works for regular web browsers
+    fileInputRef.current.click()
+  }
+
 }
 
 const handleSave = async () => {
