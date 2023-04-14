@@ -5,7 +5,7 @@ import { useAuth } from '../auth';
 import { useHistory } from 'react-router';
 
 //camera import
-import { Camera, CameraResultType } from '@capacitor/camera';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 import './AddEntryPage.css'
 import { error } from 'console';
@@ -72,11 +72,17 @@ const AddEntryPage: React.FC = () => {
 const handlePictureClick = async () => {
   // this works for regular web browsers
   // fileInputRef.current.click()
-  const photo = await Camera.getPhoto({
+  try {
+    const photo = await Camera.getPhoto({
     resultType: CameraResultType.Uri,
+    source: CameraSource.Prompt,
+    width: 600,
   })
   console.log('photo: ', photo.webPath)
   setPictureUrl(photo.webPath)
+    } catch (error) {
+      console.log('Camera errpr: ', error)
+  }
 }
 
 const handleSave = async () => {
@@ -86,7 +92,7 @@ const handleSave = async () => {
     .doc(userId)
     .collection('entries');
   let entryData = { date, title, description, pictureUrl };
-  if (pictureUrl.startsWith('blob:')) {
+  if (!pictureUrl.startsWith('/assets')) {
     try {
       const downloadUrl = await savePicture(pictureUrl, userId);
       entryData = { ...entryData, pictureUrl: downloadUrl };
