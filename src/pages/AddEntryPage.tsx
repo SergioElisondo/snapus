@@ -4,6 +4,9 @@ import { firestore, storage } from '../firebase';
 import { useAuth } from '../auth';
 import { useHistory } from 'react-router';
 
+//camera import
+import { Camera, CameraResultType } from '@capacitor/camera';
+
 import './AddEntryPage.css'
 import { error } from 'console';
 
@@ -46,9 +49,6 @@ const AddEntryPage: React.FC = () => {
     }
   }
 
-
-
-
 //   const handleSave = async () => {
 //     setLoading(true)
 //   const entriesRef = firestore
@@ -68,6 +68,16 @@ const AddEntryPage: React.FC = () => {
 //    setLoading(false); // set showLoading to false after save is complete
 //   history.goBack();
 // };
+
+const handlePictureClick = async () => {
+  // this works for regular web browsers
+  // fileInputRef.current.click()
+  const photo = await Camera.getPhoto({
+    resultType: CameraResultType.Uri,
+  })
+  console.log('photo: ', photo.webPath)
+  setPictureUrl(photo.webPath)
+}
 
 const handleSave = async () => {
   setLoading(true);
@@ -119,7 +129,7 @@ const handleSave = async () => {
               onChange={handleFileChange}
               />
               <img src={pictureUrl} alt='placeholder asset'
-              onClick={() => fileInputRef.current.click()}
+              onClick={handlePictureClick}
               />
             </IonItem>
             <IonItem>
