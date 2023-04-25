@@ -49,7 +49,7 @@ const HomePage: React.FC = () => {
           entries.map((entry) =>
             <IonItem button key={entry.id} routerLink={`/my/entries/view/${entry.id}`}>
               <IonThumbnail slot='end'>
-                <IonImg src={entry.pictureUrl}/>
+                <IonImg src={entry.pictureUrl} style={{ height: '50px', width: '50px' }} />
               </IonThumbnail>
               <IonLabel>
                 <h2>{formatDate(entry.date)}</h2>
