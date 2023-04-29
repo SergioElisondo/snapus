@@ -5,7 +5,9 @@ import { Redirect, Route } from 'react-router-dom'
 import EntryPage from './pages/EntryPage';
 import HomePage from './pages/HomePage';
 import SettingsPage from './pages/SettingsPage';
-import { home as homeIcon, settings as settingsIcon } from 'ionicons/icons'
+import { home as homeIcon, person as personIcon } from 'ionicons/icons'
+// settings as settingsIcon this was for the cogwheel
+
 // import { useState } from 'react';
 // import { IonReactRouter } from '@ionic/react-router';
 
@@ -57,8 +59,8 @@ const AppTabs: React.FC = () => {
           <IonLabel>Home</IonLabel>
         </IonTabButton>
         <IonTabButton tab="settings" href="/my/settings">
-          <IonIcon icon={settingsIcon} />
-          <IonLabel>Settings</IonLabel>
+          <IonIcon icon={personIcon} />
+          <IonLabel>Account</IonLabel>
         </IonTabButton>
       </IonTabBar>
     </IonTabs>
