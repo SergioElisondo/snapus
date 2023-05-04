@@ -9,7 +9,7 @@ const SettingsPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <IonButton color={'medium'} expand="block" onClick={() => {
+        <IonButton color={'dark'} expand="block" onClick={() => {
           auth.signOut()
         }}>Logout</IonButton>
       </IonContent>
