@@ -40,7 +40,7 @@ const AppTabs: React.FC = () => {
     <IonTabs>
       <IonRouterOutlet>
         <Route exact path="/my/entries">
-          <HomePage/>
+          <HomePage key="home"/>
         </Route>
         <Route exact path="/my/entries/add">
           <AddEntryPage/>
@@ -54,6 +54,7 @@ const AppTabs: React.FC = () => {
         {/* <Redirect exact path="/" to="/my/entries" /> */}
       </IonRouterOutlet>
       <IonTabBar slot='bottom'>
+        {/* <IonTabButton tab="home" href={`/my/entries?${Math.random()}`}> */}
         <IonTabButton tab="home" href="/my/entries">
           <IonIcon icon={homeIcon} />
           <IonLabel>Home</IonLabel>
